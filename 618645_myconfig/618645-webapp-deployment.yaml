@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 618645-webapp-deployment
+  namespace: 618645-proj
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: 618645-webapp-deployment
+        image: narendran573/rosa-webapp-618645:v1
+        ports:
+        - containerPort: 8001
+        env:
+            - name: APP_KEY 
+              valueFrom:
+                secretKeyRef:
+                  name: webapp-secret-618645
+                  key: APP_KEY
+            - name: WELCOME_MSG
+              valueFrom:
+                configMapKeyRef:
+                  name: webapp-config-618645
+                  key: WELCOME_MSG
+
